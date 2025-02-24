@@ -18,4 +18,4 @@ No ads, No registration, No other permissions required. Internet connection only
 
 Extending Generative AI's scheduled tasks with Python.
 
-TODO: this feature will be released soon.
+✨Gai apps and the PyGai extension suite are cross-platform systems developed using a mixed-programming approach. Multilingual documentation is coming soon.

@@ -1,0 +1,104 @@
+% include('header.tpl', pageTitle=pageTitle)
+% include('admin/header.tpl')
+
+
+<form  class="row" method="GET" action="/admin/prompt/">
+  <div class="col-auto">
+    <select class="form-select" id="type" name="type">
+      <option value="">select menu</option>  
+      <option value="topicName" {{ 'selected' if type == 'topicName' else '' }}>Topic</option>  
+      <option value="configName" {{ 'selected' if type == 'configName' else '' }}>Config</option>   
+      <option value="instName" {{ 'selected' if type == 'instName' else '' }}>Instruction</option>    
+      <option value="dirName" {{ 'selected' if type == 'dirName' else '' }}>Directory</option>    
+    </select>
+  </div>
+  <div class="col-auto">
+    <input type="text" class="form-control" id="keyword" name="keyword" value="{{keyword}}" placeholder="keyword">
+  </div>  
+  <div class="col-auto">
+  <button type="submit" class="btn btn-secondary">Search</button>
+  </div>  
+  <div class="col-auto">
+    <a class="btn btn-primary" href="/admin/prompt/edit/" role="button">New</a>
+  </div>
+</form>
+
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">time</th>
+      <th scope="col">type</th>
+      <th scope="col">quota</th>
+      <th scope="col">interval</th>
+      <th scope="col">y/n</th>    
+      <th scope="col">prompt</th>
+      <th scope="col">action</th>      
+    </tr>
+  </thead>
+  <tbody>
+
+% for row in prompts:
+<tr>
+  <th scope="row">{{row['id']}}</th>
+  <td>
+    {{row['lastModified']}}
+    <br/>
+    <span class="small text-muted"> ->{{row['lastContentId']}}</span>
+
+  </td>    
+  <td>{{row['type']}}</td>
+  <td>{{row['quota']}}</td>  
+  <td>{{row['intervalId']}}:{{row['intervalName']}}</td>    
+  <td>{{ 'Y' if row['enabled'] else 'N'}}</td>
+  <td class="text-break">
+    {{row['topicId']}}:{{row['topicName']}}
+    <br/>
+    {{row['configName']}}
+    <br/>
+    {{row['instName']}}
+    <br/>
+    {{row['dirId']}}:{{row['dirName']}}
+    <br/>
+    {{row['text']}}
+    <br/>
+    {{row['files']}}
+  </td>
+  <td>
+    <a href="/admin/prompt/files/{{row['id']}}">File</a>
+    <br/>
+    <a href="/admin/prompt/edit/?id={{row['id']}}">Edit</a>
+  </td>
+</tr>
+% end
+
+  </tbody>
+</table>
+
+% if pages>1:
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item {{'disabled' if page==1 else ''}}">
+      <a class="page-link" href="/admin/prompt/?page={{page-1}}&type={{type}}&keyword={{keyword}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    
+    % for num in range(1, pages+1):    
+    <li class="page-item {{'active' if num==page else ''}}"  >
+      <a class="page-link" href="/admin/prompt/?page={{num}}&type={{type}}&keyword={{keyword}}" target="_self" >{{num}}</a>
+    </li>
+    % end
+
+    <li class="page-item {{'disabled' if page==pages else ''}}">
+      <a class="page-link" href="/admin/prompt/?page={{page+1}}&type={{type}}&keyword={{keyword}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+% end
+
+% include('footer.tpl')

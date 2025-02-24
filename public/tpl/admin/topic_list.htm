@@ -1,0 +1,35 @@
+% include('header.tpl', pageTitle=pageTitle)
+% include('admin/header.tpl')
+
+
+<a class="btn btn-primary" href="/admin/topic/edit/" role="button">New</a>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">time</th>
+      <th scope="col">topic</th>
+      <th scope="col">memo</th>
+      <th scope="col">action</th>      
+    </tr>
+  </thead>
+  <tbody>
+
+% for row in topics:
+<tr>
+  <th scope="row">{{row['id']}}</th>
+  <td>{{row['lastModified']}}</td>    
+  <td>{{row['name']}}</td>
+  <td>{{row['memo']}}</td>  
+  <td>
+    <a href="/admin/topic/edit/?id={{row['id']}}">Edit</a>
+  </td>
+</tr>
+% end
+
+  </tbody>
+</table>
+
+
+% include('footer.tpl')

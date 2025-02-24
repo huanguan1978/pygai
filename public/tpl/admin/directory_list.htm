@@ -1,0 +1,39 @@
+% include('header.tpl', pageTitle=pageTitle)
+% include('admin/header.tpl')
+
+
+<a class="btn btn-primary" href="/admin/directory/edit/" role="button">New</a>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">time</th>
+      <th scope="col">tmpl</th>
+      <th scope="col">path</th>
+      <th scope="col">action</th>      
+    </tr>
+  </thead>
+  <tbody>
+
+% for row in directories:
+<tr>
+  <th scope="row">{{row['id']}}</th>
+  <td>{{row['lastModified']}}</td>    
+  <td>{{row['tmpl']}}</td>
+  <td>
+    {{row['name']}}
+    <br/>
+    {{row['path']}}
+  </td>  
+  <td>
+    <a href="/admin/directory/edit/?id={{row['id']}}">Edit</a>
+  </td>
+</tr>
+% end
+
+  </tbody>
+</table>
+
+
+% include('footer.tpl')

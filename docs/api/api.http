@@ -1,0 +1,37 @@
+@host = http://localhost:5050
+@token = eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNyb3duLmhnQGdtYWlsLmNvbSJ9.RjfbV--QLjt2IOgSdYPqnr7r60xxTVWoIvrXjlE-mIYgECb2B-u1I1oZLk_L_NQAd_4kOTzpJqBnXouHAoKBWQ
+@username = crown.hg%40gmail.com
+@password = crown.hg%40gmail%232024
+
+### 用户登录换取jsontoken
+POST {{host}}/signin
+Content-Type: application/x-www-form-urlencoded
+
+username={{username}}&password={{password}}
+
+### 获取当前用户信息
+GET {{host}}/jwtinfo
+Authorization: Bearer {{token}}
+
+### 获取一个提示语
+GET {{host}}/aiprompt/output/
+Authorization: Bearer {{token}}
+
+### 获取一个提示语
+POST {{host}}/aicontent/input/
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "status": "success",
+    "data": {
+        "id": "",
+        "text": "看图作文:请看图片,图片中的人物在作表达什么,对我们有什么样的启示呢.体裁不限,请写一篇字数不少于500字的作文.",
+        "cronId": "_CRON_TEST1",
+        "histId": "L_1234567890",
+        "promptId": "2",
+        "files": [
+            "http://localhost:8080/genimgs/139473250698292130.png"
+        ]
+    }
+}

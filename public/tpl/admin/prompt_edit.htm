@@ -1,0 +1,109 @@
+% include('header.tpl', pageTitle=pageTitle)
+% include('admin/header.tpl')
+
+<form method="POST" enctype="multipart/form-data" action="/admin/prompt/edit/">
+  <input type="hidden" name="id" value = "{{prompt['id']}}" readonly />  
+
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" value="1" id="enabled" name="enabled"
+    {{ 'checked' if prompt['enabled'] else '' }}  
+    />
+    <label class="form-check-label" for="enabled">
+      enabled
+    </label>
+  </div>
+
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" value="1" id="isShowInContent" name="isShowInContent"
+    {{ 'checked' if prompt['isShowInContent'] else '' }}  
+    />
+    <label class="form-check-label" for="isShowInContent">
+      isShowInContent
+    </label>
+  </div>
+
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="type" id="gentxt" value="gentxt"
+    {{ 'checked' if prompt['type'] == 'gentxt' else '' }}
+    />
+    <label class="form-check-label" for="gentxt">genTxt</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="type" id="genimg"  value="genimg"
+    {{ 'checked' if prompt['type'] == 'genimg' else '' }}
+    />
+    <label class="form-check-label" for="genimg">genImg</label>
+  </div>
+
+  <div class="mb-3">
+    <label for="quota" class="form-label">Quota</label>
+    <input type="text" class="form-control" id="quota" name="quota" value = "{{prompt['quota']}}" aria-describedby="quotaHelp">
+    <div id="quotaHelp" class="form-text">optional, quota.</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="intervalId" class="form-label">Interval</label>
+    <select class="form-select" id="intervalId" name="intervalId" required aria-label="interval select example">
+      <option value="">interval select menu</option>
+      % for key,val in intervals.items():
+      <option value="{{key}}" {{ 'selected' if prompt['intervalId'] == key else '' }}>{{val}}</option>
+      % end
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="topicId" class="form-label">Topic</label>
+    <select class="form-select" id="topicId" name="topicId" required aria-label="topic select example">
+      <option value="">topic select menu</option>
+      % for key,val in topics.items():
+      <option value="{{key}}" {{ 'selected' if prompt['topicId'] == key else '' }}>{{val}}</option>
+      % end
+    </select>
+  </div>
+
+   <div class="mb-3">
+    <label for="configId" class="form-label">Config</label>
+    <select class="form-select" id="configId" name="configId" aria-label="config select example">
+      <option value="">config select menu</option>
+  % for key,val in configs.items():
+      <option value="{{key}}" {{ 'selected' if prompt['configId'] == key else '' }}>{{val}}</option>
+  % end
+    </select>
+   </div>
+
+   <div class="mb-3">
+    <label for="instId" class="form-label">Instruction</label>
+    <select class="form-select" id="instId" name="instId" aria-label="instruction select example">
+      <option value="">instruction select menu</option>
+  % for key,val in instructions.items():
+      <option value="{{key}}" {{ 'selected' if prompt['instId'] == key else '' }}>{{val}}</option>
+  % end
+    </select>
+   </div>  
+
+   <div class="mb-3">
+    <label for="dirId" class="form-label">Directory</label>
+    <select class="form-select" id="dirId" name="dirId" required aria-label="directory select example">
+      <option value="">directory select menu</option>
+  % for key,val in paths.items():
+      <option value="{{key}}" {{ 'selected' if prompt['dirId'] == key else '' }}>{{val}}</option>
+  % end
+    </select>
+   </div>
+
+  <div class="mb-3">
+    <label for="text" class="form-label">Text</label>
+    <textarea class="form-control" id="text" name="text" rows="6" required aria-describedby="textHelp">{{prompt['text']}}</textarea>    
+    <div id="textHelp" class="form-text">required, prompt text.</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="memo" class="form-label">Memo</label>
+    <input type="text" class="form-control" id="memo" name="memo" value = "{{prompt['memo']}}" aria-describedby="nameHelp">
+    <div id="memoHelp" class="form-text">optional, your memo.</div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+% include('footer.tpl')

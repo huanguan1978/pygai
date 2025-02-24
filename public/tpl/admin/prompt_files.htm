@@ -1,0 +1,30 @@
+% include('header.tpl', pageTitle=pageTitle)
+% include('admin/header.tpl')
+
+% if urlfiles:
+<ul class="list-group list-group-flush">
+  % for index, urlfile in enumerate(urlfiles):  
+  % filename = urlfile.split('/')[-1]
+  <li class="list-group-item">{{filename}}
+    <a href="/admin/prompt/files/{{id_}}?index={{index}}&delete={{filename}}">delete</a>
+    <a href="{{urlfile}}" target="_blank">browse</a>
+  </li>
+  % end
+</ul>
+% end
+
+
+<form method="POST" enctype="multipart/form-data" action="/admin/prompt/files/{{id_}}">
+
+  <div class="mb-3">
+    <label for="upload" class="form-label">Upload</label>
+    <input type="file" class="form-control" id="upload" name="upload"  multiple="false"
+      >
+    <div id="uploadHelp" class="form-text">required, upload file, allow image, video, audio, pdf.</div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+% include('footer.tpl')

@@ -1,0 +1,174 @@
+% include('header.tpl', pageTitle=pageTitle)
+% include('admin/header.tpl')
+
+
+<form  method="GET" action="/admin/content/">
+
+  <div class="mb-3">
+    <label for="topicId" class="form-label">Topic</label>
+    <select class="form-select" id="topicId" name="topicId" aria-label="topic select example">
+      <option value="0">topic select menu</option>
+  % for key,val in topics.items():
+      <option value="{{key}}" {{ 'selected' if topicId == key else '' }}>{{val}}</option>
+  % end
+    </select>
+   </div>  
+
+   <div class="mb-3">
+    <label for="dirId" class="form-label">Directory</label>
+    <select class="form-select" id="dirId" name="dirId" aria-label="directory select example">
+      <option value="0">directory select menu</option>
+  % for key,val in paths.items():
+      <option value="{{key}}" {{ 'selected' if dirId == key else '' }}>{{val}}</option>
+  % end
+    </select>
+   </div>   
+
+  <button type="submit" class="btn btn-secondary">Search</button>
+
+</form>
+
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">prompt</th>
+      <th scope="col">content</th>
+      <th scope="col">writeToFile</th>      
+      <th scope="col">action</th>      
+    </tr>
+  </thead>
+  <tbody>
+
+% for row in contents:
+<tr>
+  <th scope="row">{{row['id']}}</th>
+  <td>
+    {{row['created']}}
+    <br/>
+    {{row['histCronId']}}
+    <br/>
+    {{row['histId']}}
+    <br/>
+    promptId:{{row['histPromptId']}}
+  </td>
+
+  <td class="text-break">
+    {{row['topicName']}}
+    <br/>
+    {{row['dirName']}}
+    <br/>
+    {{row['dirPath']}}
+    <br/>
+    <div class="text-truncate" style="max-width: 400px;">{{row['text']}}</div>
+    <br/>
+    {{row['files']}}
+  </td>
+
+  <td>
+    {{row['publishTime']}}
+    <br/>
+
+    <br/>
+    {{row['publishFileName']}}
+    <br/>
+    fileId:{{row['publishId']}}
+  </td>
+
+  <td>
+    <a href="/admin/content/view/{{row['id']}}">View</a>
+    % if row['publishId']:
+    <br />
+    <a class="act-rewritetofile" href="/admin/content/publish/{{row['id']}}?reWrite=1">RewriteToFile</a>    
+    % else:
+    <br />
+    <a class="act-delete" href="/admin/content/delete/{{row['id']}}">Delete</a>        
+    <br />
+    <a class="act-writetofile" href="/admin/content/publish/{{row['id']}}">WriteToFile</a>    
+    % end
+  </td>
+</tr>
+% end
+
+  </tbody>
+</table>
+
+% if pages>1:
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item {{'disabled' if page==1 else ''}}">
+      <a class="page-link" href="/admin/content/?page={{page-1}}&topicId={{topicId}}&dirId={{dirId}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    
+    % for num in range(1, pages+1):    
+    <li class="page-item {{'active' if num==page else ''}}"  >
+      <a class="page-link" href="/admin/content/?page={{num}}&topicId={{topicId}}&dirId={{dirId}}" target="_self" >{{num}}</a>
+    </li>
+    % end
+
+    <li class="page-item {{'disabled' if page==pages else ''}}">
+      <a class="page-link" href="/admin/content/?page={{page+1}}&topicId={{topicId}}&dirId={{dirId}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+% end
+
+<script type="text/javascript" defer="defer">
+
+  var pathname = window.location.pathname;
+  $('document').ready(function(event){
+  
+    // publish begin
+    $('.act-writetofile, .act-rewritetofile').on('click', function(event){
+      event.preventDefault();
+      var href = $(this).attr('href'); 
+      console.log('writetofile, href:', href);
+      $.get(href)
+        .done(function(data, status){
+          console.log('writetofile, data:', data);
+          if(status === 'success'){
+            alert('writetofile was successful');
+            location.reload();
+          }
+        })
+        .fail(function(jqXHR, textStatus, errorThrown){
+          console.log('writetofile failed, status:', textStatus, 'error:', errorThrown);
+          alert('writetofile failed: ' + textStatus + '\nResponse: ' + jqXHR.responseText);
+        });
+      });
+    // publish end
+
+    // delete begin
+    $('.act-delete').on('click', function(event){
+      event.preventDefault();
+      var href = $(this).attr('href'); 
+      console.log('delete, href:', href);
+      var ok = confirm('Are you sure you want to delete?');
+      if(!ok){
+        return;
+      }
+      $.get(href)
+        .done(function(data, status){
+          if(status === 'success'){
+            location.reload();
+          }
+        })
+        .fail(function(jqXHR, textStatus, errorThrown){
+          console.log('delete failed, status:', textStatus, 'error:', errorThrown);
+          alert('delete failed: ' + textStatus + '\nResponse: ' + jqXHR.responseText);
+        });
+    });
+    // delete end
+
+
+
+  }); // jq.ready end
+</script>  
+
+% include('footer.tpl')

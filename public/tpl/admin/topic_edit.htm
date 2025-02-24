@@ -1,0 +1,22 @@
+% include('header.tpl', pageTitle=pageTitle)
+% include('admin/header.tpl')
+
+<form method="POST" enctype="multipart/form-data" action="/admin/topic/edit/">
+  <input type="hidden" name="id" value = "{{topic['id']}}" readonly />  
+
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <input type="text" class="form-control" id="name" name="name" value = "{{topic['name']}}" required aria-describedby="nameHelp">
+    <div id="nameHelp" class="form-text">required, topic name.</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="memo" class="form-label">Memo</label>
+    <input type="text" class="form-control" id="memo" name="memo" value = "{{topic['memo']}}" aria-describedby="memoHelp">
+    <div id="memoHelp" class="form-text">optional, your memo.</div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+% include('footer.tpl')

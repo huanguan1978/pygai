@@ -1,0 +1,49 @@
+% include('header.tpl', pageTitle=pageTitle)
+% include('admin/header.tpl')
+
+<form method="POST" enctype="multipart/form-data" action="/admin/directory/edit/">
+  <input type="hidden" name="id" value = "{{directory['id']}}" readonly />  
+
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <input type="text" class="form-control" id="name" name="name" value = "{{directory['name']}}" required aria-describedby="nameHelp">
+    <div id="nameHelp" class="form-text">required, unique, directory name.</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="path" class="form-label">Directory</label>
+    <input type="path" class="form-control" id="path" name="path" value = "{{directory['path']}}" required aria-describedby="pathHelp">
+
+    <input type="file" class="form-control" id="directory" name="directory" value = "{{directory['path']}}" 
+      webkitdirectory directory multiple="false"
+      >
+    <div id="pathHelp" class="form-text">required, directory.</div>
+  </div>
+
+  <div class="mb-3">
+    <label for="tmpl" class="form-label">Template</label>
+    <select class="form-select" id="tmpl" name="tmpl" aria-label="template select example">
+      <option value="">template select menu</option>
+  % for key,val in tmpls.items():
+      <option value="{{key}}" {{ 'selected' if directory['tmpl'] == key else '' }}>{{val}}</option>
+  % end
+    </select>
+   </div>  
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<script type="text/javascript" defer>
+  var directoryInput = document.getElementById('directory');
+
+  directoryInput.addEventListener('input', (e) => {
+    var filePath = directoryInput.value;
+    var fileName = directoryInput.files[0].name;
+    var directoryPath = filePath.substring(0, filePath.lastIndexOf(fileName));
+    document.getElementById('path').value = directoryPath;
+    console.log(directoryPath);
+    return false;
+  });
+</script>
+
+% include('footer.tpl')

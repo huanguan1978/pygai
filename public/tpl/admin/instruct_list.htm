@@ -1,0 +1,35 @@
+% include('header.tpl', pageTitle=pageTitle)
+% include('admin/header.tpl')
+
+
+<a class="btn btn-primary" href="/admin/instruct/edit/" role="button">New</a>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">time</th>
+      <th scope="col">name</th>
+      <th scope="col">text</th>
+      <th scope="col">action</th>      
+    </tr>
+  </thead>
+  <tbody>
+
+% for row in instruct:
+<tr>
+  <th scope="row">{{row['id']}}</th>
+  <td>{{row['lastModified']}}</td>    
+  <td>{{row['name']}}</td>
+  <td>{{row['text']}}</td>  
+  <td>
+    <a href="/admin/instruct/edit/?id={{row['id']}}">Edit</a>
+  </td>
+</tr>
+% end
+
+  </tbody>
+</table>
+
+
+% include('footer.tpl')

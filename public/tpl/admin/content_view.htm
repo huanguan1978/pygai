@@ -1,0 +1,21 @@
+% include('header.tpl', pageTitle=pageTitle)
+% include('admin/header.tpl')
+
+<div>
+  {{content['promptText']}}
+  <br />
+  {{content['promptFiles']}}
+</div>
+
+<hr />
+
+<div>
+  <pre style="white-space: pre-wrap;">
+    {{content['text']}}
+  </pre>
+  <br />
+  {{content['files']}}
+</div>
+
+
+% include('footer.tpl')

@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS gaiPublishAttachment (
 );  -- ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='gai, publishAttachment';
 
 
-INSERT INTO gaiConfig(id, type, name, text) VALUES(1, 'gentxt', 'Low-Risk Generation Text', json('{"modelId":"geminiflash158B","modelName":"gemini-1.5-flash-8b","safeySetting":{"harassment":"low","hateSpeech":"low","sexuallyExplicit":"low","dangerousContent":"low","enabled":"true"},"generationConfig":{"maxOutputTokens":4096,"stopSequences":[],"temperature":1.0,"topP":0.95,"enabled":"true"}}'));
+INSERT INTO gaiConfig(id, type, name, text) VALUES(1, 'gentxt', 'Low-Risk Generation Text', json('{"modelId":"geminiflash25lite","modelName":"gemini-2.5-flash-lite","safeySetting":{"harassment":"unspecified","hateSpeech":"unspecified","sexuallyExplicit":"unspecified","dangerousContent":"unspecified","enabled":"false"},"generationConfig":{"maxOutputTokens":65536,"responseModalities":[],"stopSequences":[],"autoThinking":true,"showThinking":false,"temperature":1.0,"topP":0.95,"topK":40,"enabled”:”false”}}'));
 INSERT INTO gaiConfig(id, type, name, text) VALUES(2, 'genimg', 'Safe Single Image Generation (No People)', json('{"modelId":"image3fast","modelName":"imagen-3.0-fast-generate-001","numberOfImages":"1","aspectRatio":"1:1","language":"","safetyFilterLevel":"block_some","personGeneration":"dont_allow","negativePrompt":"", "enabled":"true"}'));
 
 INSERT INTO gaiInterval(id, name, expr, memo) VALUES

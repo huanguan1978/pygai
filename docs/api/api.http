@@ -3,21 +3,21 @@
 @username = crown.hg%40gmail.com
 @password = crown.hg%40gmail%232024
 
-### 用户登录换取jsontoken
+### User authenticates, obtaining a JWT
 POST {{host}}/signin
 Content-Type: application/x-www-form-urlencoded
 
 username={{username}}&password={{password}}
 
-### 获取当前用户信息
+### Retrieve current user profile.
 GET {{host}}/jwtinfo
 Authorization: Bearer {{token}}
 
-### 获取一个提示语
+### Fetch an AI generation prompt.
 GET {{host}}/aiprompt/output/
 Authorization: Bearer {{token}}
 
-### 获取一个提示语
+### Post-process AI-generated content.
 POST {{host}}/aicontent/input/
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -26,7 +26,7 @@ Content-Type: application/json
     "status": "success",
     "data": {
         "id": "",
-        "text": "看图作文:请看图片,图片中的人物在作表达什么,对我们有什么样的启示呢.体裁不限,请写一篇字数不少于500字的作文.",
+        "text": "Rain streaked diagonally outside, tapping a soft patter against the windowpane. I gazed out, my thoughts drifting as aimlessly as the drops.",
         "cronId": "_CRON_TEST1",
         "histId": "L_1234567890",
         "promptId": "2",

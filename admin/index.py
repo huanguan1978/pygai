@@ -7,7 +7,6 @@ from bottle import Bottle, request, response, template, redirect
 from beaker.session import Session
 
 import inject
-from regex import D
 
 from gai.publish import publish
 from setting import totalPages, uploads_path, urlOfPart, uploads_urlpart, page_size

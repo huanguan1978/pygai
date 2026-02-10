@@ -18,7 +18,12 @@ def index(injector:inject.Injector):
     logger = injector.get_instance(logging.Logger) # type: ignore
 
     if request.method.upper() in ('GET', 'HEAD', 'OPTIONS'):
-        tmpl = template('login.htm', pageTitle='LoginPage')
+        alert = {}
+        is_wsgi_debug = setting.wsgi_debug
+        if is_wsgi_debug:
+            alert['warning'] = ['Debug Mode Active — Not for Production']
+
+        tmpl = template('login.htm', pageTitle='LoginPage', is_wsgi_debug=is_wsgi_debug)
         return tmpl
     
     formData:dict = request.forms # type: ignore

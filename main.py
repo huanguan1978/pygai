@@ -21,6 +21,8 @@ from bottlejwt import JwtPlugin
 
 from bottle_injector import InjectorPlugin
 import setting
+bottle.BaseRequest.MEMFILE_MAX = setting.wsgi_request_maxsize  # type: ignore
+
 tmpl_path = setting.tmpl_path
 uploads_path = setting.uploads_path
 downloads_path = setting.downloads_path
@@ -236,6 +238,14 @@ if __name__ == '__main__':
     
     host = setting.app_setting.get('wsgi.host')
     port = setting.app_setting.get('wsgi.port')
-    debug = setting.app_setting.get('wsgi.port')
-    reloader = setting.app_setting.get('wsgi.reloader')    
-    run(app=apps, host=host, port=port, debug=debug, reloader=reloader)
+    run(app=apps, host=host, port=port, debug=setting.wsgi_debug, reloader=setting.wsgi_reloader, quiet=setting.wsgi_quiet)
+
+    '''
+    # use gevent; pip install gevent;
+    logger = my_injector.get_instance('logger')
+    run(server='gevent', app=apps, host=host, port=port, 
+            debug=setting.wsgi_debug, reloader=setting.wsgi_reloader, quiet=setting.wsgi_quiet,
+            log = logger, error_log = logger,
+            )
+
+    '''

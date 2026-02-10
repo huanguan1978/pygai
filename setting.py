@@ -5,7 +5,21 @@ import os
 from math import ceil
 from urllib.parse import urljoin
 from bottle import default_app
-from ast import literal_eval
+
+def str_to_bool(val: str) -> bool:
+    """Convert a string representation of truth to `True` or `False`.
+
+    True values are 'y', 'yes', 't', 'true', 'on', and '1'; false values
+    are 'n', 'no', 'f', 'false', 'off', and '0'.  Raises ValueError if
+    'val' is anything else.
+    """
+    val = val.lower()
+    if val in ('y', 'yes', 't', 'true', 'on', '1'):
+        return True
+    if val in ('n', 'no', 'f', 'false', 'off', '0'):
+        return False
+    msg = f'Invalid truth value "{val}"'
+    raise ValueError(msg)
 
 app_path :str = os.path.dirname(os.path.realpath(__file__))
 ext_path :str = os.path.join(os.path.dirname(app_path), 'pygaiext') # app_path/../pygaiext
@@ -25,6 +39,13 @@ cache_control :str  = '' # html static file cache control
 default_app = default_app()
 default_app.config.load_config(os.path.join(app_path,'config', 'setting.ini'))
 app_setting = default_app.config
+wsgi_debug = str_to_bool(app_setting.get('wsgi.debug'))
+wsgi_reloader = str_to_bool(app_setting.get('wsgi.reloader'))
+wsgi_quiet = str_to_bool(app_setting.get('wsgi.quiet'))
+wsgi_request_maxsize = app_setting.get('wsgi.request_maxsize') # unit: MB, 
+if not wsgi_request_maxsize or not wsgi_request_maxsize.isdigit():
+    wsgi_request_maxsize = 8 # default:8MB
+wsgi_request_maxsize = int(wsgi_request_maxsize) * 1024 * 1024
 # print(app_setting)
 
 mkdocs_default_path = os.path.expandvars(os.path.expanduser(mkdocs_default_path))
@@ -73,7 +94,7 @@ session_opts = {
     'session.cookie_expires': app_setting.get('session.cookie_expires'),
     'session.data_dir': session_path_savedata,
     'session.lock_dir': session_path_savelock,
-    'session.auto': True if literal_eval(app_setting.get('session.auto')) else False,
+    'session.auto': str_to_bool(app_setting.get('session.auto')),
 }
 if app_setting.get('session.cookie_domain'):
     session_opts['session.cookie_domain'] = app_setting.get('session.cookie_domain')
